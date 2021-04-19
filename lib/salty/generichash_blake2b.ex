@@ -49,8 +49,16 @@ defmodule Salty.Generichash.Blake2b do
     C.generichash_blake2b_salt_personal(outlen, data, key, salt, personal)
   end
 
+  def init() do
+    C.generichash_blake2b_init(bytes_max())
+  end
+
+  def init(outlen) do
+    C.generichash_blake2b_init(outlen)
+  end
+
   def init(key, outlen) do
-    C.generichash_blake2b_init(key, outlen)
+    C.generichash_blake2b_init_with_key(key, outlen)
   end
 
   def init(key, outlen, salt, personal) do
@@ -59,6 +67,10 @@ defmodule Salty.Generichash.Blake2b do
 
   def update(state, input) do
     C.generichash_blake2b_update(state, input)
+  end
+
+  def final(state) do
+    C.generichash_blake2b_final(state, bytes_max())
   end
 
   def final(state, outlen) do
